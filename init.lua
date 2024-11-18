@@ -65,8 +65,8 @@ end
 highlight('Normal', color_light, color_dark, 'none')
 highlight('Statement', color_yellow, 'none', 'bold')
 highlight('String', color_green, 'none', 'none')
-highlight('Comment', color_light_d2, 'none', 'italic')
-highlight('Constant', color_purple, 'none', 'italic')
+highlight('Comment', color_light_d2, 'none', 'none')
+highlight('Constant', color_purple, 'none', 'none')
 highlight('Boolean', color_yellow, 'none', 'none')
 highlight('Number', color_red, 'none', 'none')
 highlight('identifier', color_light, 'none', 'none')
@@ -75,7 +75,29 @@ highlight('PreProc', color_purple, 'none', 'bold')
 highlight('Type', color_light_d1, 'none', 'none')
 highlight('Special', color_light_d1, 'none', 'none')
 highlight('Error', color_dark, color_red, 'none')
-highlight('Todo', color_yellow, 'none', 'bold')
 highlight('Added', color_green, 'none', 'none')
 highlight('Changed', color_yellow, 'none', 'none')
 highlight('Removed', color_red, 'none', 'none')
+highlight('Todo', color_yellow, 'none', 'bold')
+highlight('Note', color_blue, 'none', 'bold')
+highlight('Fixme', color_red, 'none', 'bold')
+highlight('Hack', color_red, 'none', 'bold')
+highlight('Optimize', color_purple, 'none', 'bold')
+
+vim.api.nvim_create_autocmd('BufWinEnter', { callback = function()
+    if vim.fn.exists("b:postsyntax_loaded") == 1 then
+        return
+    end
+
+    vim.cmd [[let b:postsyntax_loaded = 1]]
+
+    -- Highlight trailing whitespace
+    vim.cmd [[syntax match Error /\s\+$/]]
+    -- Highlight comment tags
+    vim.cmd [[syntax keyword Todo TODO containedin=Comment contained]]
+    vim.cmd [[syntax keyword Note NOTE containedin=Comment contained]]
+    vim.cmd [[syntax keyword Fixme FIXME containedin=Comment contained]]
+    vim.cmd [[syntax keyword Hack HACK containedin=Comment contained]]
+    vim.cmd [[syntax keyword Optimize OPTIMIZE containedin=Comment contained]]
+    vim.cmd [[syntax region Normal start=/\(\(TODO\|NOTE\|FIXME\|HACK\|OPTIMIZE\)(\)\@<=/ end=/)\@=/ containedin=Comment contained]]
+end })

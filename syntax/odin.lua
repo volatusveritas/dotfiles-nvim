@@ -2,6 +2,8 @@ if vim.fn.exists("b:current_syntax") == 1 then
     return
 end
 
+vim.cmd([[let b:current_syntax = "odin"]])
+
 local original_compatible_options = vim.o.cpoptions
 vim.cmd("set cpoptions&")
 
@@ -22,7 +24,7 @@ vim.cmd("syntax keyword Type int complex complex32 complex64 complex128 matrix t
 vim.cmd("syntax keyword Type quaternion quaternion64 quaternion128 quaternion256")
 vim.cmd("syntax keyword Boolean true false")
 vim.cmd("syntax keyword Constant nil")
-vim.cmd([[syntax match Type /\<\u\w\+\>/]])
+vim.cmd([[syntax match Type /\<\u\(\w\+\)\?\>/]])
 vim.cmd([[syntax match Constant '\s\+---\(\s\|$\)']])
 vim.cmd([[syntax match Function /\<\w\+\>\( :: proc\)\@=/]])
 vim.cmd([[syntax match Function /\<\w\+\>\((\)\@=/]])
@@ -30,13 +32,14 @@ vim.cmd([[syntax match Constant /\<\u\(\u\|\d\|_\)\+\>/]])
 vim.cmd([[syntax match Number /\<\d\+/]])
 vim.cmd([[syntax match Float /\(\d\+\)\?\.\d\+/]])
 vim.cmd([[syntax match Statement /#\<\a\w*\>/]])
+vim.cmd [[syntax match PreProc /@(\?/]]
+vim.cmd [[syntax match PreProc /\(@(\?\)\@<=\w\+/]]
+vim.cmd [[syntax match PreProc /\(@.*\)\@<=)/]]
 
 vim.cmd([[syntax region String start=/`/ end=/`/]])
 vim.cmd([[syntax region Character start=/'/ skip=/\\'/ end=/'/]])
 vim.cmd([[syntax region String start=/"/ skip=/\\"/ end=/"/]])
 vim.cmd([[syntax region Comment start=/\/\// end=/$/]])
 vim.cmd([[syntax region Comment start=/\/\*/ end=/\*\// contains=Comment]])
-
-vim.cmd([[let b:current_syntax = "odin"]])
 
 vim.o.cpoptions = original_compatible_options
